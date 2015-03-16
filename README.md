@@ -1,2 +1,0 @@
-# flipacoinbot
-/u/flipacoinbot
