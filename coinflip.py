@@ -4,12 +4,12 @@ import praw, time, random, os
 
 r = praw.Reddit(user_agent = "User-Agent: Python/urllib:coinflip  (by /u/lizardsrock4)")
 print("Logging in")
-r.login()
+r.login("flipacoinbot", "awesome9")
 
 word_array = ["flip a coin", "flipacoin", "coinflip", "flip a coin", "coin flip", "!flipacoin", "flipacoinbot", "/u/flipacoinbot"]
 cache = []
 
-banned_subs = ["MechanicalKeyboards", "AskReddit", "legaladvice", "dota2loungebets", "MLS"]
+banned_subs = ["MechanicalKeyboards", "AskReddit", "legaladvice", "dota2loungebets", "MLS", "nrl", "csgobetting"]
 
 
 def run_bot():
@@ -21,7 +21,7 @@ def run_bot():
             isMatch = any(string in comment_text for string in word_array)
             notBanned = comment.subreddit.display_name in banned_subs
             if comment.id not in cache and isMatch:
-                if comment.id is not notBanned:
+                if comment.subreddit.display_name not in banned_subs:
             
                     print("Match Found! Comment id:" + comment.id + " Subreddit: " + comment.subreddit.display_name)
                     randInt = random.randint(0, 1)
@@ -30,11 +30,11 @@ def run_bot():
                         print("Tails!")
                         cache.append(comment.id)
                     elif randInt == 0:
-                        comment.reply("You asked for a coin to be flipped,so I flipped one for you, the result was: **Heads**\n\n ---- \n\n  ^This ^bot's ^messages ^aren't ^checked ^often, ^for ^the ^quickest ^response, ^click ^[here](/message/compose?to=lizardsrock4&subject=CoinBot) ^to ^message ^my ^maker \n\n ^Check ^out ^my ^[source](http://github.com/lizardsrock4)")
+                        comment.reply("You asked for a coin to be flipped, so I flipped one for you, the result was: **Heads**\n\n ---- \n\n  ^This ^bot's ^messages ^aren't ^checked ^often, ^for ^the ^quickest ^response, ^click ^[here](/message/compose?to=lizardsrock4&subject=CoinBot) ^to ^message ^my ^maker \n\n ^Check ^out ^my ^[source](http://github.com/lizardsrock4)")
                         print("Heads!")
                         cache.append(comment.id)
                 else:
-                    print("Match found, but comment was in a banned sub")
+                    print("Match found, but comment was in a banned sub:" + comment.subreddit.display_name )
     except Exception:
         print("Error")
         run_bot()
